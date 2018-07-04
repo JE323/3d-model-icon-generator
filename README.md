@@ -1,4 +1,4 @@
-# Blender Icon Generator
+# Blender Icon & Thumbnail Generator
 
 Generation of Icons using Blender3D from the command line to be incorperated as part of an automated pipeline.
 
