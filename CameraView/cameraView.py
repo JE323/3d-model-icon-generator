@@ -16,27 +16,35 @@ def moveLocal(obj, vec):
 #variables
 camRot = Vector((65,0,55))
 extraShiftAmount = 3
+pixelBorder = Vector((20,20))
 
 
 print("\nStarting script")
 
 obj_camera = bpy.data.objects["Camera"]
 
-cameraAspRatio = bpy.context.scene.render.resolution_x/bpy.context.scene.render.resolution_y
-#print(cameraAspRatio)
+
+camRes = Vector((bpy.context.scene.render.resolution_x, bpy.context.scene.render.resolution_y))
+
+
+cameraAspRatio = camRes.x / camRes.y
 bpy.context.scene.render.resolution_percentage = 100
+
+lowerBorderLimit = Vector((pixelBorder.x / camRes.x, pixelBorder.y / camRes.y))
+upperBorderLimit = Vector(((camRes.x - pixelBorder.x) / camRes.x, (camRes.y - pixelBorder.y) / camRes.y))
+print("lower border limit: " + str(lowerBorderLimit))
+print("upper border limit: " + str(upperBorderLimit))
 
 #calculate bound center
 meshObjects = 0
 boundCentre = Vector((0,0,0))
-
 for obj in scene.objects:
     if (obj.type == "MESH"):
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
         boundCentre += obj.location
         meshObjects+=1
 boundCentre /= meshObjects
-print("Bound center" + str(boundCentre))
+print("Center of objects: " + str(boundCentre))
 
 #move camera to centre and set rotation
 obj_camera.location = boundCentre
