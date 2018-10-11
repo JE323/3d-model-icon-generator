@@ -12,7 +12,10 @@ class Plane2DProjection:
     min2DPlane = Vector((1000,1000,1000))
     max2DPlane = Vector((-1000,-1000,-1000))
     
+    camRef = None
+    
     def __init__(self, cam):
+        self.camRef = cam
         for ob in scene.objects:
             if (ob.type == "MESH"):
                 bbox_corners = [ob.matrix_world * Vector(corner) for corner in ob.bound_box]
@@ -39,6 +42,20 @@ class Plane2DProjection:
                         self.min2DPlane.z = co_2d.z
                     elif (co_2d.z > self.max2DPlane.z):
                         self.max2DPlane.z = co_2d.z
+                        
+    def CalculateOrthoCameraScale(self, xBound, yBound):
+        xScale = self.camRef.data.ortho_scale * (self.max2DPlane.x - self.min2DPlane.x) / xBound
+        yScale = self.camRef.data.ortho_scale * (self.max2DPlane.y - self.min2DPlane.y) / yBound
+        
+        if (yScale > xScale):
+            return yScale
+        else:
+            return xScale
+        
+    def PrintProjectionInformation(self):
+        print("Projected x plane: min " + str(self.min2DPlane.x) + ", max " + str(self.max2DPlane.x))
+        print("Projected y plane: min " + str(self.min2DPlane.y) + ", max " + str(self.max2DPlane.y))
+        print("Projected z plane: min " + str(self.min2DPlane.z) + ", max " + str(self.max2DPlane.z))
 
 #helper functions
 def moveLocal(obj, vec):
@@ -63,6 +80,12 @@ def calcCentreOfMeshes():
 def main():
     obj_camera = bpy.data.objects["Camera"]
     obj_camera.data.type = camType
+    obj_camera.data.clip_start = 0.01
+    obj_camera.data.clip_end = 100
+    
+    scene.render.pixel_aspect_x = 1
+    scene.render.pixel_aspect_y = 1
+
     if (camType == 'ORTHO'):
         obj_camera.data.ortho_scale = 5
 
@@ -73,6 +96,7 @@ def main():
 
     lowerBorderLimit = Vector((pixelBorder.x / camRes.x, pixelBorder.y / camRes.y))
     upperBorderLimit = Vector(((camRes.x - pixelBorder.x) / camRes.x, (camRes.y - pixelBorder.y) / camRes.y))
+
     print("lower border limit: " + str(lowerBorderLimit))
     print("upper border limit: " + str(upperBorderLimit))
 
@@ -84,23 +108,23 @@ def main():
 
     #calculate positions the bound box corners are on the 2d camera plane
     projectionPlane = Plane2DProjection(obj_camera)
-
-    print("Projected x plane: min " + str(projectionPlane.min2DPlane.x) + ", max " + str(projectionPlane.max2DPlane.x))
-    print("Projected y plane: min " + str(projectionPlane.min2DPlane.y) + ", max " + str(projectionPlane.max2DPlane.y))
-    print("Projected z plane: min " + str(projectionPlane.min2DPlane.z) + ", max " + str(projectionPlane.max2DPlane.z))
-
+    projectionPlane.PrintProjectionInformation()
+    obj_camera.data.ortho_scale = projectionPlane.CalculateOrthoCameraScale(upperBorderLimit.x - lowerBorderLimit.x, upperBorderLimit.y - lowerBorderLimit.y)
+    
     #move camera back by the z amount it needs to
-    moveLocal(obj_camera, Vector((0.0, 0.0, extraShiftAmount)))
+    #moveLocal(obj_camera, Vector((0.0, 0.0, extraShiftAmount)))
+    
     '''
-    if (min2DPlane.z < 0):
-        moveLocal(obj_camera, Vector((0.0, 0.0, (-min2DPlane.z + extraShiftAmount))))
+    if (projectionPlane.min2DPlane.z < 0):
+        moveLocal(obj_camera, Vector((0.0, 0.0, (projectionPlane.min2DPlane.z + extraShiftAmount))))'''
+    '''
     else:
-        moveLocal(obj_camera, Vector((0.0, 0.0, (max2DPlane.z + extraShiftAmount))))
-    '''
+        moveLocal(obj_camera, Vector((0.0, 0.0, (projectionPlane.max2DPlane.z + extraShiftAmount))))'''
+    
 
 #variables
 camRot = Vector((65,0,55))
-extraShiftAmount = 3
+extraShiftAmount = 0.5
 pixelBorder = Vector((20,20))
 camType = 'ORTHO' # 'ORTHO' or 'PERSP'
 
