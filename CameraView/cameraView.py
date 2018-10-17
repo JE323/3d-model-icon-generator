@@ -105,8 +105,8 @@ def main():
 
     #move camera to centre and set rotation
     boundCentre = calcCentreOfMeshes()
-    obj_camera.location = boundCentre
-    obj_camera.rotation_euler = camRot * pi / 180
+    #obj_camera.location = boundCentre
+    obj_camera.rotation_euler = camRot * pi / 180    
     bpy.ops.wm.redraw_timer(type='DRAW', iterations=1)
 
     #calculate positions the bound box corners are on the 2d camera plane
@@ -117,7 +117,7 @@ def main():
     obj_camera.data.ortho_scale = newCameraScale
     
     #move camera back by the z amount it needs to
-    moveLocal(obj_camera, Vector((0.0, 0.0, projectionPlane.CalculateLocalZMovement(0.1))))
+    moveLocal(obj_camera, Vector((0.0, 0.0, projectionPlane.CalculateLocalZMovement(0.0))))
     
     '''
     if (projectionPlane.min2DPlane.z < 0):
