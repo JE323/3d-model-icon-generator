@@ -107,6 +107,7 @@ def main():
     boundCentre = calcCentreOfMeshes()
     obj_camera.location = boundCentre
     obj_camera.rotation_euler = camRot * pi / 180
+    bpy.ops.wm.redraw_timer(type='DRAW', iterations=1)
 
     #calculate positions the bound box corners are on the 2d camera plane
     projectionPlane = Plane2DProjection(obj_camera)
