@@ -64,7 +64,7 @@ class Plane2DProjection:
 scene = bpy.context.scene
 
 # loading
-objectToLoad = "G://Blender Projects//blender-icon-generator//ExampleObjects//bolt.obj"
+objectToLoad = ""
 
 # render settings
 cameraType = "ORTHO" # PERSP or ORTHO
@@ -116,7 +116,7 @@ def parseArgs():
     except:
         argv = [] 
     
-    print("/nAdditional Arguments Specified:")
+    print("Additional Arguments Specified:")
     
     #get file to load
     try:
@@ -199,6 +199,7 @@ def importObject():
     print("importing object")
     
     #import object depending on the type - .fbx, .obj
+    print(objectToLoad)
     detectedFileTypeSplit = objectToLoad.split('.')
     detectedFileType = detectedFileTypeSplit[len(detectedFileTypeSplit)-1]
     

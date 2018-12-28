@@ -1,0 +1,17 @@
+{
+    "blenderLocation" : "C:\\Program Files\\Blender Foundation\\Blender\\blender.exe",
+    "renderLocation" : "G:\\BlenderProjects\\blender-icon-generator\\Output\\",
+    "scriptLocation" : "G:\\BlenderProjects\\blender-icon-generator\\IconGenerator.py",
+    "renderFormat" : "JPEG",
+
+    "file" : "G:\\BlenderProjects\\blender-icon-generator\\ExampleObjects\\monkey.obj",
+    "camType" : "PERSP",
+    "renderSize" : "(1024,1024)",
+    "pixBorder" : 10,
+    "camRot" : "(60,0,30)",
+    "samples" : 10,
+    "bgColour" : "(1,1,1,1)",
+    "vignette" : 0,
+
+    "logFileLocation" : "G:\\BlenderProjects\\blender-icon-generator\\PowerShell\\Log\\output.log"
+}

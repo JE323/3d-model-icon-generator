@@ -1,4 +1,4 @@
-# Blender Icon & Thumbnail Generator
+# Icon & Thumbnail Generator for Model Files
 
 This package uses Blender3D from the command line to generated images of models to be used as icons or thumbnails, the idea being this would be incorperated as part of an automated pipeline. See the roadmap to check on what features will be coming soon.
 
