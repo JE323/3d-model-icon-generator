@@ -120,6 +120,7 @@ def parseArgs():
     
     #get file to load
     try:
+        global objectToLoad
         objectToLoad = argv[argv.index("-file") + 1]
         print("Object File Specified: " + objectToLoad)
     except:
