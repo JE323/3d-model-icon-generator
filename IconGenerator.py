@@ -64,7 +64,7 @@ class Plane2DProjection:
 scene = bpy.context.scene
 
 # loading
-objectToLoad = ""
+objectToLoad = "ERROR"
 
 # render settings
 cameraType = "ORTHO" # PERSP or ORTHO
