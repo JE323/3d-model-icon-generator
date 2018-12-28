@@ -53,7 +53,7 @@ class Plane2DProjection:
             return xScale
         
     def CalculateLocalZMovement(self, adjustment):
-        return 0 + adjustment
+        return adjustment - self.min2DPlane.z
         
     def PrintProjectionInformation(self):
         print("Projected x plane: min " + str(self.min2DPlane.x) + ", max " + str(self.max2DPlane.x))
@@ -66,6 +66,7 @@ def moveLocal(obj, vec):
     inv.invert()
     # vec aligned to local axis
     obj.location = obj.location + vec * inv
+    bpy.ops.wm.redraw_timer(type='DRAW', iterations=1)
 
 def calcCentreOfMeshes():
     meshObjects = 0

@@ -34,17 +34,6 @@ If you would like to contribute please get in touch first with the functionality
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/JE323/blender-icon-generator/tags). 
 
-## Roadmap
-
-* Base render functionality to be implemented in python with an example process being called from a batch file, including importing an object file and rendering out an image.
-* Implementation of the camera position to be automatically set - this is considered the final core item for V0.1
-* Implementation of basic post-processing and additional render settings
-* Implementation of configuration file being set from .json
-* Written documentation of the system
-* Automated testing of the system 
-* Development of a C# service that is setup with a FileSystemWatcher to auto generate new images automatically
-* Implementation of whitelist and blacklist filtering for the C# service
-
 ## Authors
 
 * **J E** - *Initial work / Developer* - [J E](https://github.com/JE323)
