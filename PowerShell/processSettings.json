@@ -5,10 +5,10 @@
     "renderFormat" : "JPEG",
 
     "file" : "G:\\BlenderProjects\\blender-icon-generator\\ExampleObjects\\monkey.obj",
-    "camType" : "PERSP",
-    "renderSize" : "(1024,1024)",
+    "camType" : "ORTHO",
+    "renderSize" : "(512,512)",
     "pixBorder" : 10,
-    "camRot" : "(60,0,30)",
+    "camRot" : "(55,0,30)",
     "samples" : 10,
     "bgColour" : "(1,1,1,1)",
     "vignette" : 0,

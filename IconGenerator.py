@@ -68,7 +68,7 @@ objectToLoad = ""
 
 # render settings
 cameraType = "ORTHO" # PERSP or ORTHO
-renderSize = Vector((1024,1024))
+renderSize = Vector((512,512))
 pixelBorder = Vector((10,10))
 cameraRotation = Vector((60,0,0))
 sampleNumber = 10
@@ -186,7 +186,7 @@ def parseArgs():
             
     #get vignette state
     try:
-        useVignette = bool(argv[argv.index("-vignette") + 1])
+        useVignette = bool(int(argv[argv.index("-vignette") + 1]))
         print("Vignettte Specified: " + str(useVignette))
     except:
         print("No vignette setting provided. Using default false.")
