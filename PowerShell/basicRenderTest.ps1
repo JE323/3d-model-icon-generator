@@ -30,8 +30,8 @@ Set-Location 'G:\BlenderProjects\blender-icon-generator\PowerShell'
 
 $startTime = Get-Date -Format g
 
-$stdLog = "G:\BlenderProjects\blender-icon-generator\PowerShell\Output\outputStd.log"
-$errorLog = "G:\BlenderProjects\blender-icon-generator\PowerShell\Output\outputError.log"
+$stdLog = "G:\BlenderProjects\blender-icon-generator\PowerShell\Log\outputStd.log"
+$errorLog = "G:\BlenderProjects\blender-icon-generator\PowerShell\Log\outputError.log"
 
 Start-Process -FilePath "C:\\Program Files\\Blender Foundation\\Blender\\blender.exe" -ArgumentList $settings.GenerateProcessInformation() -RedirectStandardOutput $stdLog -RedirectStandardError $errorLog -Wait
 
