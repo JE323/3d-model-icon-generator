@@ -1,10 +1,11 @@
 {
     "blenderLocation" : "C:\\Program Files\\Blender Foundation\\Blender\\blender.exe",
-    "renderLocation" : "G:\\BlenderProjects\\blender-icon-generator\\Output\\",
     "scriptLocation" : "G:\\BlenderProjects\\blender-icon-generator\\IconGenerator.py",
-    "renderFormat" : "JPEG",
 
-    "file" : "G:\\BlenderProjects\\blender-icon-generator\\ExampleObjects\\monkey.obj",
+    "fileLocation" : "G:\\BlenderProjects\\blender-icon-generator\\ExampleObjects\\",
+    "filename" : "monkey.obj",
+    "renderLocation" : "G:\\BlenderProjects\\blender-icon-generator\\Output\\",
+    
     "camType" : "ORTHO",
     "renderSize" : "(512,512)",
     "pixBorder" : 10,
