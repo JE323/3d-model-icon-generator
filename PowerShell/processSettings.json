@@ -13,5 +13,5 @@
     "bgColour" : "(1,1,1,1)",
     "vignette" : 0,
 
-    "logFileLocation" : "G:\\BlenderProjects\\blender-icon-generator\\PowerShell\\Log\\output.log"
+    "logFileLocation" : "G:\\BlenderProjects\\blender-icon-generator\\PowerShell\\output.log"
 }
