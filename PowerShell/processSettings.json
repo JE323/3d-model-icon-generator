@@ -1,12 +1,12 @@
 {
     "blenderLocation" : "C:\\Program Files\\Blender Foundation\\Blender\\blender.exe",
-    "scriptLocation" : "G:\\BlenderProjects\\blender-icon-generator\\IconGenerator.py",
+    "scriptLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\IconGenerator.py",
 
-    "fileLocation" : "G:\\BlenderProjects\\blender-icon-generator\\ExampleObjects\\",
+    "fileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\ExampleObjects\\",
     "filename" : "monkey.obj",
-    "renderLocation" : "G:\\BlenderProjects\\blender-icon-generator\\Output\\",
+    "renderLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Output\\",
     
-    "camType" : "ORTHO",
+    "camType" : "PERSP",
     "renderSize" : "(512,512)",
     "pixBorder" : 10,
     "camRot" : "(55,0,30)",
@@ -14,5 +14,5 @@
     "bgColour" : "(1,1,1,1)",
     "vignette" : 0,
 
-    "logFileLocation" : "G:\\BlenderProjects\\blender-icon-generator\\PowerShell\\output.log"
+    "logFileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\PowerShell\\output.log"
 }
