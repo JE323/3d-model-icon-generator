@@ -5,14 +5,7 @@
     "fileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\ExampleObjects\\",
     "filename" : "monkey.obj",
     "renderLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Output\\",
-    
-    "camType" : "PERSP",
-    "renderSize" : "(512,512)",
-    "pixBorder" : 10,
-    "camRot" : "(55,0,30)",
-    "samples" : 10,
-    "bgColour" : "(1,1,1,1)",
-    "vignette" : 0,
+    "renderSettings" : "renderSettings.json",
 
     "logFileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\PowerShell\\output.log"
 }

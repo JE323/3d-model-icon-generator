@@ -1,0 +1,9 @@
+{
+    "camType" : "ORTHO",
+    "renderSize" : "(256,256)",
+    "pixBorder" : 5,
+    "camRot" : "(65,0,30)",
+    "samples" : 20,
+    "bgColour" : "(1,1,1,0)",
+    "vignette" : 1
+}

@@ -5,6 +5,20 @@ import sys
 import os.path
 from mathutils import Vector
 from math import pi
+import json
+
+
+### class ###
+class RenderSettings:
+    def __init__(self):
+        self.cameraType = "ORTHO" # PERSP or ORTHO
+        self.renderSize = Vector((256,256))
+        self.pixelBorder = Vector((10,10))
+        self.cameraRotation = Vector((60,0,0))
+        self.sampleNumber = 10
+        # post processing settings
+        self.bgColour = Vector((1,1,1,1))
+        self.useVignette = False
 
 #### variables ###
 #references
@@ -14,15 +28,7 @@ scene = bpy.context.scene
 objectToLoad = "ERROR"
 
 # render settings
-cameraType = "ORTHO" # PERSP or ORTHO
-renderSize = Vector((512,512))
-pixelBorder = Vector((10,10))
-cameraRotation = Vector((60,0,0))
-sampleNumber = 10
-
-# post processing settings
-bgColour = Vector((1,1,1,1))
-useVignette = False
+renderSettings = RenderSettings()
 
 # output settings
 outputName = ""
@@ -59,7 +65,7 @@ def parseArgs():
 
     try:
         argv = argv[argv.index("--") + 1:]  # get all args after "--"
-        #print(argv)
+        print(argv)
     except:
         argv = [] 
     
@@ -74,72 +80,116 @@ def parseArgs():
         print("No object provided.")
         pass
         
-    #get camera type
     try:
-        cameraType = argv[argv.index("-camType") + 1]
-        print("Camera Type Specified: " + cameraType)
-    except Exception as e:
-        print("No camera type provided. Using default perspective.")
-        pass
+        renderFileLocation = argv[argv.index("-settings") + 1]
 
-    #get render size
-    try:
-        renderSizeStr = argv[argv.index("-renderSize") + 1]
-        renderSizeStr = renderSizeStr.replace('(','').replace(')','').split(',')
-        if (len(renderSizeStr) == 2):
-            renderSize = Vector((float(renderSizeStr[0]),float(renderSizeStr[1])))
-            print("Render Size Specified: " + str(int(renderSize.x)) + " x " + str(int(renderSize.y)))
+        #import json settings file
+        global importedRenderSettings
+        with open(renderFileLocation) as f:
+            importedData = f.read()
+            importedRenderSettings = json.loads(importedData)
+        
+        print("Imported settings file.")
+        
+        
+        global renderSettings
+        ### adjust global parameters
+        print(importedRenderSettings)
+        
+        
+        print(importedRenderSettings['pixBorder'])
+        print(importedRenderSettings['camRot'])
+        print(importedRenderSettings['samples'])
+        print(importedRenderSettings['bgColour'])
+        print(importedRenderSettings['vignette'])
+        
+        
+        #get camera type
+        try:
+            if (importedRenderSettings['camType'] != ""):
+                renderSettings.cameraType = importedRenderSettings['camType']
+                print("Camera Type Specified: " + renderSettings.cameraType)
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No camera type provided. Using default perspective.")
+            pass
+
+        #get render size
+        try:
+            if (importedRenderSettings['renderSize'] != ""):
+                renderSizeStr = importedRenderSettings['renderSize'].replace('(','').replace(')','').split(',')
+                if (len(renderSizeStr) == 2):
+                    renderSettings.renderSize = Vector((float(renderSizeStr[0]),float(renderSizeStr[1])))
+                    print("Render Size Specified: " + str(int(renderSettings.renderSize.x)) + " x " + str(int(renderSettings.renderSize.y)))
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No render size provided. Using default 512 x 512.")
+            pass
+            
+        try:
+            if (importedRenderSettings['pixBorder'] != ""):
+                renderSettings.pixelBorder = Vector((importedRenderSettings['pixBorder'],importedRenderSettings['pixBorder']))
+                print("Pixel Border Specified: " + str(renderSettings.pixelBorder))
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No pixel border provided. Using default 0px.")
+            pass
+        
+        #get camera rotation
+        try:
+            if (importedRenderSettings['camRot'] != ""):
+                cameraRotationStr = importedRenderSettings['camRot'].replace('(','').replace(')','').split(',')
+                if (len(cameraRotationStr) == 3):
+                    renderSettings.cameraRotation = Vector((float(cameraRotationStr[0]),float(cameraRotationStr[1]),float(cameraRotationStr[2])))
+                    print("Camera Rotation Specified: (" + str(renderSettings.cameraRotation.x) + ", " + str(renderSettings.cameraRotation.y) + ", " + str(renderSettings.cameraRotation.z) + ")")
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No camera rotation. Using default 65,0,55.")
+            pass
+                
+        #get sample amount
+        try:
+            if (importedRenderSettings['samples'] != ""):
+                renderSettings.sampleNumber = int(float(importedRenderSettings['samples']))
+                print("Sample Number Specified: " + str(renderSettings.sampleNumber))
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No sample number provided. Using default 10 samples.")
+            pass
+                
+        #get background colour
+        try:
+            if (importedRenderSettings['bgColour'] != ""):
+                bgColourStr = importedRenderSettings['bgColour'].replace('(','').replace(')','').split(',')
+                if (len(bgColourStr) == 4):
+                    renderSettings.bgColour = Vector((float(bgColourStr[0]),float(bgColourStr[1]),float(bgColourStr[2]),float(bgColourStr[3])))
+                    print("Background Colour Specified: (" + str(renderSettings.bgColour.x) + ", " + str(renderSettings.bgColour.y) + ", " + str(renderSettings.bgColour.z) + ", " + str(renderSettings.bgColour.w) + ")")
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No background colour provided. Using default (1,1,1,0).")
+            pass
+                
+        #get vignette state
+        try:
+            if (importedRenderSettings['vignette'] != ""):
+                renderSettings.useVignette = bool(int(importedRenderSettings['vignette']))
+                print("Vignettte Specified: " + str(renderSettings.useVignette))
+            else:
+                raise Exception('Setting not found!')
+        except:
+            print("No vignette setting provided. Using default false.")
+            pass
+
     except:
-        print("No render size provided. Using default 512 x 512.")
+        print("No render settings provided.")
         pass
         
-    #get pixel border amount
-    try:
-        pixelBorderAmount = int(float(argv[argv.index("-pixBorder") + 1]))
-        pixelBorder = Vector((pixelBorderAmount,pixelBorderAmount))
-        print("Pixel Border Specified: " + str(pixelBorderAmount))
-    except:
-        print("No pixel border provided. Using default 0px.")
-        pass
-        
-    #get camera rotation
-    try:
-        cameraRotationStr = argv[argv.index("-camRot") + 1]
-        cameraRotationStr = cameraRotationStr.replace('(','').replace(')','').split(',')
-        if (len(cameraRotationStr) == 3):
-            cameraRotation = Vector((float(cameraRotationStr[0]),float(cameraRotationStr[1]),float(cameraRotationStr[2])))
-            print("Camera Rotation Specified: (" + str(cameraRotation.x) + ", " + str(cameraRotation.y) + ", " + str(cameraRotation.z) + ")")
-    except:
-        print("No camera rotation. Using default 65,0,55.")
-        pass
-            
-    #get sample amount
-    try:
-        sampleNumber = int(float(argv[argv.index("-samples") + 1]))
-        print("Sample Number Specified: " + str(sampleNumber))
-    except:
-        print("No sample number provided. Using default 10 samples.")
-        pass
-            
-    #get background colour
-    try:
-        bgColourStr = argv[argv.index("-bgColour") + 1]
-        bgColourStr = bgColourStr.replace('(','').replace(')','').split(',')
-        if (len(bgColourStr) == 4):
-            bgColour = Vector((float(bgColourStr[0]),float(bgColourStr[1]),float(bgColourStr[2]),float(bgColourStr[3])))
-            print("Background Colour Specified: (" + str(bgColour.x) + ", " + str(bgColour.y) + ", " + str(bgColour.z) + ", " + str(bgColour.w) + ")")
-    except:
-        print("No background colour provided. Using default (1,1,1,0).")
-        pass
-            
-    #get vignette state
-    try:
-        useVignette = bool(int(argv[argv.index("-vignette") + 1]))
-        print("Vignettte Specified: " + str(useVignette))
-    except:
-        print("No vignette setting provided. Using default false.")
-        pass 
-    
     #space out next set of outputs    
     print("")
         
@@ -174,20 +224,20 @@ def setupRenderSettings():
     scene.cycles.film_transparent = True
 
     #render size
-    scene.render.resolution_x = int(renderSize.x)
-    scene.render.resolution_y = int(renderSize.y)
+    scene.render.resolution_x = int(renderSettings.renderSize.x)
+    scene.render.resolution_y = int(renderSettings.renderSize.y)
     scene.render.pixel_aspect_x = 1
     scene.render.pixel_aspect_y = 1
     scene.render.resolution_percentage = 100
     
     #set sample number
-    scene.cycles.samples = sampleNumber
+    scene.cycles.samples = renderSettings.sampleNumber
     
 def setupCamera():
     print("setting up camera")
     
     #create camera
-    rotationRad = cameraRotation *pi / 180
+    rotationRad = renderSettings.cameraRotation *pi / 180
     bpy.ops.object.camera_add(enter_editmode=False, location=Vector((0,0,0)), rotation=rotationRad, layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
     bpy.ops.transform.translate(value=(0, 0, 2), constraint_axis=(False, False, True), constraint_orientation='LOCAL')
 
@@ -196,7 +246,7 @@ def setupCamera():
     bpy.context.scene.camera = cam
     
     #set camera type
-    cam.data.type = cameraType
+    cam.data.type = renderSettings.cameraType
     cam.data.clip_start = 0.01
     cam.data.clip_end = 100
     
@@ -205,7 +255,7 @@ def setupCamera():
     bpy.context.scene.render.resolution_percentage = 100
       
     #set camera rotation
-    cam.rotation_euler = cameraRotation * pi / 180    
+    cam.rotation_euler = renderSettings.cameraRotation * pi / 180    
     bpy.ops.wm.redraw_timer(type='DRAW', iterations=1) # redraw to use new camera information
 
     # Select objects that will be rendered and move camera position to the correct place
