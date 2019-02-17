@@ -39,7 +39,7 @@ class ProcessSettings {
     }
 }
 
-Set-Location 'G:\BlenderProjects\ModelThumbnailGenerator\blender-icon-generator\PowerShell'
+Set-Location 'G:\BlenderProjects\ModelThumbnailGenerator\blender-icon-generator\Scripts\RenderFromDefault'
 
 #convert settings from json file
 $processSettings = [ProcessSettings](Get-Content "$(Get-Location)\processSettings.json" | Out-String | ConvertFrom-Json)
@@ -47,8 +47,8 @@ $processSettings.Init()
 
 $startTime = Get-Date -Format g
 
-$stdLog = "G:\BlenderProjects\ModelThumbnailGenerator\blender-icon-generator\PowerShell\outputStd.log"
-$errorLog = "G:\BlenderProjects\ModelThumbnailGenerator\blender-icon-generator\PowerShell\outputError.log"
+$stdLog = "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Scripts\\RenderFromDefault\\Logs\\outputStd.log"
+$errorLog = "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Scripts\\RenderFromDefault\\Logs\\outputError.log"
 
 Start-Process -FilePath "C:\\Program Files\\Blender Foundation\\Blender\\blender.exe" -ArgumentList $processSettings.GenerateProcessInformation() -RedirectStandardOutput $stdLog -RedirectStandardError $errorLog -Wait
 

@@ -1,11 +1,11 @@
 {
     "blenderLocation" : "C:\\Program Files\\Blender Foundation\\Blender\\blender.exe",
-    "scriptLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\IconGenerator.py",
+    "scriptLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Scripts\\RenderFromDefault\\generateIcon.py",
 
     "fileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\ExampleObjects\\",
     "filename" : "monkey.obj",
     "renderLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Output\\",
     "renderSettings" : "renderSettings.json",
 
-    "logFileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\PowerShell\\output.log"
+    "logFileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Scripts\\RenderFromDefault\\Logs\\output.log"
 }
