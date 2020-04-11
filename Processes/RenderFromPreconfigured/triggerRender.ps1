@@ -6,7 +6,6 @@ class ProcessSettings {
     [string] $fileLocation
     [string] $filename
     [string] $renderLocation
-    [string] $renderSettings
 
     [string] $logFilesLocation
 
@@ -21,8 +20,6 @@ class ProcessSettings {
     [string]$outputFilepathNumbered
 
     [string]$absoluteScriptLocation
-    
-    [string]$absoluteRenderSettings
 
     [string]$absoluteLogsLocation
     [string]$stdLog
@@ -41,7 +38,6 @@ class ProcessSettings {
         $this.outputFilepathNumbered = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameNumbered)
         
         $this.absoluteScriptLocation = $this.GenerateAbsolutePath($this.scriptLocation, $relToAbs)
-        $this.absoluteRenderSettings = (Join-Path -Path (Get-Location) -ChildPath $this.renderSettings)
         $this.absoluteLogsLocation = $this.GenerateAbsolutePath($this.logFilesLocation, $relToAbs)
 
         $this.stdLog = "$($this.absoluteLogsLocation)\outputStd.log"
@@ -52,7 +48,9 @@ class ProcessSettings {
     }
 
     [array]GenerateProcessInformation(){
-        $argumentArray = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', $this.absoluteScriptLocation, '-F', "PNG", '-f', '1', '--', '-file', (Join-Path -Path $this.fileLocation -ChildPath $this.filename), '-settings', $this.absoluteRenderSettings)
+        $argumentArray = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', `
+        $this.absoluteScriptLocation, '-F', "PNG", '-f', '1', '--', '-file', (Join-Path -Path $this.fileLocation -ChildPath $this.filename))
+
         return $argumentArray
     }
 
@@ -73,7 +71,12 @@ $processSettings = [ProcessSettings](Get-Content "$($scriptDir)\processSettings.
 $processSettings.Init($scriptDir)
 
 $startTime = Get-Date -Format g
-Start-Process -FilePath $processSettings.blenderLocation -ArgumentList $processSettings.GenerateProcessInformation() -RedirectStandardOutput $processSettings.stdLog -RedirectStandardError $processSettings.errorLog -Wait
+
+Write-Host $processSettings.GenerateProcessInformation()
+
+Start-Process -FilePath $processSettings.blenderLocation -ArgumentList $processSettings.GenerateProcessInformation() `
+-RedirectStandardOutput $processSettings.stdLog -RedirectStandardError $processSettings.errorLog -Wait
+
 $endTime = Get-Date -Format g
 
 $newHeader = [string]::Format("`r`nNew Process - Started: {0} - Finished: {1}", $startTime, $endTime)
@@ -81,7 +84,9 @@ $newHeader | Out-File $processSettings.finalLog -Append
 
 Get-Content $processSettings.errorLog, $processSettings.stdLog | Out-File $processSettings.finalLog -Append
 
-#Write-Host ("Isolated Filename: {0} `nWith hashes: {1} `nWith numbers: {2}`nFull Path: {3}`n" -f $processSettings.isolatedFilename, $processSettings.isolatedFilenameWithHashes, $processSettings.isolatedFilenameNumbered, $processSettings.outputFilepathNumbered)
+#Write-Host ("Isolated Filename: {0} `nWith hashes: {1} `nWith numbers: {2}`nFull Path: {3}`n" `
+#-f $processSettings.isolatedFilename, $processSettings.isolatedFilenameWithHashes, `
+#$processSettings.isolatedFilenameNumbered, $processSettings.outputFilepathNumbered)
 Try
 {
     Remove-Item ($processSettings.outputFilepath + ".png") -ErrorAction Stop
