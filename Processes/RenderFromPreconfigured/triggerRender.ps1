@@ -1,20 +1,23 @@
+param (
+    [string]$file = "",
+    [string]$output = ""
+)
+
+#Write-Host ("File specified: " + $file)
+#Write-Host ("Output specified: " + $output)
+
 class ProcessSettings {
     #parsed variables from json file
     [string] $blenderLocation
     [string] $scriptLocation
-
-    [string] $fileLocation
-    [string] $filename
-    [string] $renderLocation
-
     [string] $logLocation
-
     [string] $renderFile
 
     #processed variables
     [string]$isolatedFilename
     [string]$isolatedFilenameWithHashes
     [string]$isolatedFilenameNumbered
+    [string]$fileExtension
     [string]$outputFilepath
     [string]$outputFilepathWithHashes
     [string]$outputFilepathNumbered
@@ -23,36 +26,44 @@ class ProcessSettings {
     [string]$errorLog
     [string]$finalLog
 
+    [string]$modelLocation
+
     [string]$absoluteRenderFile
 
-    [void]Init([string] $relToAbs){
-        $this.isolatedFilename = $this.filename.Split(".")[0]
+    [void]Init([string]$file, [string]$output){
+        $this.modelLocation = Join-Path -Path (Get-Location) -ChildPath ($file) -Resolve
+        $modelLeaf = Split-Path $this.modelLocation -Leaf
+        $this.isolatedFilename = $modelLeaf.Split(".")[0]
+        $this.fileExtension = $modelLeaf.Split(".")[1]
         $this.isolatedFilenameWithHashes = $this.isolatedFilename + "_##"
         $this.isolatedFilenameNumbered = $this.isolatedFilename + "_01"
 
-        $this.outputFilepath = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilename)
-        $this.outputFilepathWithHashes = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameWithHashes)
-        $this.outputFilepathNumbered = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameNumbered)
+        $outputBaseLocation = Join-Path -Path (Get-Location) -ChildPath $output -Resolve
+        $this.outputFilepath = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilename)
+        $this.outputFilepathWithHashes = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameWithHashes)
+        $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered)
 
-        $this.stdLog = "$($this.logLocation)\outputStd.log"
-        $this.errorLog = "$($this.logLocation)\outputError.log"
-        $this.finalLog = "$($this.logLocation)\output.log"
+        $logBaseLocation = Join-Path -Path (Get-Location) -ChildPath $this.logLocation -Resolve
+        $this.stdLog = Join-Path -Path $logBaseLocation -ChildPath "\outputStd.log" -Resolve
+        $this.errorLog = Join-Path -Path $logBaseLocation -ChildPath "\outputError.log" -Resolve
+        $this.finalLog = Join-Path -Path $logBaseLocation -ChildPath "\output.log" -Resolve
 
-        $this.absoluteRenderFile = $this.GenerateAbsolutePath($this.renderFile, $relToAbs)
+        $this.absoluteRenderFile = $this.GenerateAbsolutePath($this.renderFile)
     }
 
     [array]GenerateProcessInformation(){
         $argumentArray = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', `
-        $this.scriptLocation, '-F', "PNG", '-f', '1', '--', '-file', (Join-Path -Path $this.fileLocation -ChildPath $this.filename))
+        $this.scriptLocation, '-F', "PNG", '-f', '1', '--', '-file', $this.modelLocation)
 
         return $argumentArray
     }
 
-    [string]GenerateAbsolutePath([string] $filepath, [string] $relToAbs){
-        if ($filepath.StartsWith("\")){
-            return (Join-Path -Path ($relToAbs) -ChildPath $filepath)
+    [string]GenerateAbsolutePath([string] $filepath){
+        #if its already absolute
+        if ($filepath -like ":\\"){
+            return $filepath
         }
-        return $filepath
+        return (Join-Path -Path (Get-Location) -ChildPath $filepath)
     }
 }
 
@@ -61,18 +72,27 @@ $scriptDir  = Split-Path -Parent $ScriptPath
 Set-Location $scriptDir
 
 #convert settings from json file
-$processSettings = [ProcessSettings](Get-Content "$($scriptDir)\processSettings.json" | Out-String | ConvertFrom-Json)
-$processSettings.Init($scriptDir)
 
+$processSettings = [ProcessSettings](Get-Content "$($scriptDir)\processSettings.json" | Out-String | ConvertFrom-Json)
+$processSettings.Init($file, $output)
 $startTime = Get-Date -Format g
 
-Start-Process -FilePath $processSettings.blenderLocation -ArgumentList $processSettings.GenerateProcessInformation() `
+Try
+{
+    Start-Process -FilePath $processSettings.blenderLocation -ArgumentList $processSettings.GenerateProcessInformation() `
 -RedirectStandardOutput $processSettings.stdLog -RedirectStandardError $processSettings.errorLog -Wait
-
-$endTime = Get-Date -Format g
-
-$newHeader = [string]::Format("`r`nNew Process - Started: {0} - Finished: {1}", $startTime, $endTime)
-$newHeader | Out-File $processSettings.finalLog -Append
+}
+Catch
+{
+    Write-Host ("Error was thrown!")
+    Write-Error $_.ScriptStackTrace
+}
+Finally
+{
+    $endTime = Get-Date -Format g
+    $newHeader = [string]::Format("`r`nNew Process - Started: {0} - Finished: {1}", $startTime, $endTime)
+    $newHeader | Out-File $processSettings.finalLog -Append
+}
 
 Get-Content $processSettings.errorLog, $processSettings.stdLog | Out-File $processSettings.finalLog -Append
 
