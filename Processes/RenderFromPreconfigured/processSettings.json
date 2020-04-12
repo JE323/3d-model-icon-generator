@@ -1,6 +1,6 @@
 {
     "blenderLocation" : "F:\\Program Files\\Blender Foundation\\blender-2.79b-windows64\\blender.exe",
-    "scriptLocation" : "\\generateIcon.py",
+    "scriptLocation" : "generateIcon.py",
 
     "fileLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\ExampleObjects\\",
     "filename" : "monkey.obj",

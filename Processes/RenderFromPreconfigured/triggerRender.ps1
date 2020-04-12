@@ -19,8 +19,6 @@ class ProcessSettings {
     [string]$outputFilepathWithHashes
     [string]$outputFilepathNumbered
 
-    [string]$absoluteScriptLocation
-
     [string]$absoluteLogsLocation
     [string]$stdLog
     [string]$errorLog
@@ -36,8 +34,7 @@ class ProcessSettings {
         $this.outputFilepath = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilename)
         $this.outputFilepathWithHashes = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameWithHashes)
         $this.outputFilepathNumbered = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameNumbered)
-        
-        $this.absoluteScriptLocation = $this.GenerateAbsolutePath($this.scriptLocation, $relToAbs)
+
         $this.absoluteLogsLocation = $this.GenerateAbsolutePath($this.logFilesLocation, $relToAbs)
 
         $this.stdLog = "$($this.absoluteLogsLocation)\outputStd.log"
@@ -49,7 +46,7 @@ class ProcessSettings {
 
     [array]GenerateProcessInformation(){
         $argumentArray = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', `
-        $this.absoluteScriptLocation, '-F', "PNG", '-f', '1', '--', '-file', (Join-Path -Path $this.fileLocation -ChildPath $this.filename))
+        $this.scriptLocation, '-F', "PNG", '-f', '1', '--', '-file', (Join-Path -Path $this.fileLocation -ChildPath $this.filename))
 
         return $argumentArray
     }
@@ -72,8 +69,6 @@ $processSettings.Init($scriptDir)
 
 $startTime = Get-Date -Format g
 
-Write-Host $processSettings.GenerateProcessInformation()
-
 Start-Process -FilePath $processSettings.blenderLocation -ArgumentList $processSettings.GenerateProcessInformation() `
 -RedirectStandardOutput $processSettings.stdLog -RedirectStandardError $processSettings.errorLog -Wait
 
@@ -84,9 +79,6 @@ $newHeader | Out-File $processSettings.finalLog -Append
 
 Get-Content $processSettings.errorLog, $processSettings.stdLog | Out-File $processSettings.finalLog -Append
 
-#Write-Host ("Isolated Filename: {0} `nWith hashes: {1} `nWith numbers: {2}`nFull Path: {3}`n" `
-#-f $processSettings.isolatedFilename, $processSettings.isolatedFilenameWithHashes, `
-#$processSettings.isolatedFilenameNumbered, $processSettings.outputFilepathNumbered)
 Try
 {
     Remove-Item ($processSettings.outputFilepath + ".png") -ErrorAction Stop
