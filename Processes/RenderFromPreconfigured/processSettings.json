@@ -6,7 +6,7 @@
     "filename" : "monkey.obj",
     "renderLocation" : "G:\\BlenderProjects\\ModelThumbnailGenerator\\blender-icon-generator\\Output\\",
 
-    "logFilesLocation" : "\\Logs",
+    "logLocation" : "Logs",
 
     "renderFile" : "\\renderScene.blend"
 }

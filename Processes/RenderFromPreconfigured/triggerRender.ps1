@@ -7,7 +7,7 @@ class ProcessSettings {
     [string] $filename
     [string] $renderLocation
 
-    [string] $logFilesLocation
+    [string] $logLocation
 
     [string] $renderFile
 
@@ -19,7 +19,6 @@ class ProcessSettings {
     [string]$outputFilepathWithHashes
     [string]$outputFilepathNumbered
 
-    [string]$absoluteLogsLocation
     [string]$stdLog
     [string]$errorLog
     [string]$finalLog
@@ -35,11 +34,9 @@ class ProcessSettings {
         $this.outputFilepathWithHashes = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameWithHashes)
         $this.outputFilepathNumbered = (Join-Path -Path $this.renderLocation -ChildPath $this.isolatedFilenameNumbered)
 
-        $this.absoluteLogsLocation = $this.GenerateAbsolutePath($this.logFilesLocation, $relToAbs)
-
-        $this.stdLog = "$($this.absoluteLogsLocation)\outputStd.log"
-        $this.errorLog = "$($this.absoluteLogsLocation)\outputError.log"
-        $this.finalLog = "$($this.absoluteLogsLocation)\output.log"
+        $this.stdLog = "$($this.logLocation)\outputStd.log"
+        $this.errorLog = "$($this.logLocation)\outputError.log"
+        $this.finalLog = "$($this.logLocation)\output.log"
 
         $this.absoluteRenderFile = $this.GenerateAbsolutePath($this.renderFile, $relToAbs)
     }
