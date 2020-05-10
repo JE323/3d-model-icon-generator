@@ -3,9 +3,6 @@ param (
     [string]$output = ""
 )
 
-#Write-Host ("File specified: " + $file)
-#Write-Host ("Output specified: " + $output)
-
 class Settings {
     #parsed variables from json file
     [string] $blenderLocation
@@ -47,7 +44,7 @@ class FileProcessing {
 
     [string]$absoluteRenderFile
 
-    [array]$generateProcessInformation
+    [array]$processInformation
 
     FileProcessing([Settings]$settings, [string]$file, [string]$output){
         $this.modelLocation = Join-Path -Path (Get-Location) -ChildPath ($file) -Resolve
@@ -80,7 +77,7 @@ class FileProcessing {
             throw "ERROR: Render file is not found!"
         }
 
-        $this.generateProcessInformation = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', `
+        $this.processInformation = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', `
         $settings.scriptLocation, '-F', "PNG", '-f', '1', '--', '-file', $this.modelLocation)
 
         Write-Host "File Processing Validated!"
@@ -105,28 +102,25 @@ $settings.Validate()
 
 #generate all the new file processing locations
 $fileProcessing = [fileProcessing]::New($settings, $file, $output)
-exit
 
 #start the render process 
 $startTime = Get-Date -Format g
 Try
 {
-    Start-Process -FilePath $fileProcessing.blenderLocation -ArgumentList $fileProcessing.generateProcessInformation `
+    Start-Process -FilePath $settings.blenderLocation -ArgumentList $fileProcessing.processInformation `
 -RedirectStandardOutput $fileProcessing.stdLog -RedirectStandardError $fileProcessing.errorLog -Wait
 }
 Catch
 {
-    Write-Host ("Error was thrown!")
-    Write-Error $_.ScriptStackTrace
+    throw $_.ScriptStackTrace
 }
 Finally
 {
     $endTime = Get-Date -Format g
     $newHeader = [string]::Format("`r`nNew Process - Started: {0} - Finished: {1}", $startTime, $endTime)
     $newHeader | Out-File $fileProcessing.finalLog -Append
+    Get-Content $fileProcessing.errorLog, $fileProcessing.stdLog | Out-File $fileProcessing.finalLog -Append
 }
-
-Get-Content $fileProcessing.errorLog, $fileProcessing.stdLog | Out-File $fileProcessing.finalLog -Append
 
 Try
 {
