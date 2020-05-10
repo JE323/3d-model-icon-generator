@@ -1,9 +1,3 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
 <h1 align="center">3D Model Icon Generator</h1>
 <p align="center">
   <a href="https://github.com/JE323/3d-model-icon-generator/issues">Report Bug</a>
