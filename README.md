@@ -23,7 +23,6 @@ This uses Blender3D from the command line to generated images of models to be us
 - [5 - License](#5---license)
 - [6 - Acknowledgments](#6---acknowledgments)
 
-
 ## [1 - Installation](#table-of-contents)
 
 ### [1.1 - Compatibility](#table-of-contents)
@@ -44,6 +43,7 @@ Download the github package.
 
 ### [3.1 - Customisation](#table-of-contents)
 
+.\triggerRender.ps1 -file "..\..\ExampleObjects\nut.fbx" -output "..\..\Output\"
 
 
 ### [3.2 - Workflow Integration](#table-of-contents)
