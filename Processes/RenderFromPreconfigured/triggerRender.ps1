@@ -47,7 +47,7 @@ class FileProcessing {
     [array]$processInformation
 
     FileProcessing([Settings]$settings, [string]$file, [string]$output){
-        $this.modelLocation = Join-Path -Path (Get-Location) -ChildPath ($file) -Resolve
+        $this.modelLocation = $this.GenerateAbsolutePath($file)
         if (-not (Test-Path $this.modelLocation)){
             throw "ERROR: Model location is not found!"
         }
@@ -62,12 +62,12 @@ class FileProcessing {
         $this.isolatedFilenameWithHashes = $this.isolatedFilename + "_##"
         $this.isolatedFilenameNumbered = $this.isolatedFilename + "_01"
 
-        $outputBaseLocation = Join-Path -Path (Get-Location) -ChildPath $output -Resolve
+        $outputBaseLocation = $this.GenerateAbsolutePath($output)
         $this.outputFilepath = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilename)
         $this.outputFilepathWithHashes = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameWithHashes)
         $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered)
 
-        $logBaseLocation = Join-Path -Path (Get-Location) -ChildPath $settings.logLocation -Resolve
+        $logBaseLocation = $this.GenerateAbsolutePath($settings.logLocation)
         $this.stdLog = Join-Path -Path $logBaseLocation -ChildPath "\outputStd.log" -Resolve
         $this.errorLog = Join-Path -Path $logBaseLocation -ChildPath "\outputError.log" -Resolve
         $this.finalLog = Join-Path -Path $logBaseLocation -ChildPath "\output.log" -Resolve
@@ -85,10 +85,10 @@ class FileProcessing {
 
     [string]GenerateAbsolutePath([string] $filepath){
         #if its already absolute
-        if ($filepath -like ":\\"){
+        if ($filepath -like "*:\*"){
             return $filepath
         }
-        return (Join-Path -Path (Get-Location) -ChildPath $filepath)
+        return (Join-Path -Path (Get-Location) -ChildPath $filepath -Resolve)
     }
 }
 
