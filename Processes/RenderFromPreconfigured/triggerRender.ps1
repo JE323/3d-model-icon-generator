@@ -1,6 +1,15 @@
 param (
-    [string]$file = "",
-    [string]$output = ""
+    [Parameter(Mandatory, 
+    ValueFromPipelineByPropertyName,
+    HelpMessage = "Enter the model file to have an icon generated of.")]
+    [Alias("Model")]
+    [ValidateNotNullOrEmpty()]
+    [string]$file,
+
+    [Parameter(HelpMessage = "Enter the directory to be used for the output icon location. If not specified the same loation as the provide model will be used.")]
+    [Alias("Folder", "Directory")]
+    [ValidateNotNullOrEmpty()]
+    [string]$output
 )
 
 class Settings {
@@ -61,8 +70,12 @@ class FileProcessing {
         $this.fileExtension = $modelLeaf.Split(".")[1]
         $this.isolatedFilenameWithHashes = $this.isolatedFilename + "_##"
         $this.isolatedFilenameNumbered = $this.isolatedFilename + "_01"
-
-        $outputBaseLocation = $this.GenerateAbsolutePath($output)
+        
+        if ($output){
+            $outputBaseLocation = $this.GenerateAbsolutePath($output)
+        } else {
+            $outputBaseLocation = Split-Path $this.modelLocation -Parent
+        }
         $this.outputFilepath = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilename)
         $this.outputFilepathWithHashes = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameWithHashes)
         $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered)
