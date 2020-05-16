@@ -70,8 +70,12 @@ class FileProcessing {
         $this.fileExtension = $modelLeaf.Split(".")[1]
         $this.isolatedFilenameWithHashes = $this.isolatedFilename + "_##"
         $this.isolatedFilenameNumbered = $this.isolatedFilename + "_01"
-
-        $outputBaseLocation = $this.GenerateAbsolutePath($output)
+        
+        if ($output){
+            $outputBaseLocation = $this.GenerateAbsolutePath($output)
+        } else {
+            $outputBaseLocation = Split-Path $this.modelLocation -Parent
+        }
         $this.outputFilepath = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilename)
         $this.outputFilepathWithHashes = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameWithHashes)
         $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered)
