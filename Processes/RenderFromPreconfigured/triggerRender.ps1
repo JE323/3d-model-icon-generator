@@ -78,7 +78,7 @@ class FileProcessing {
         }
 
         $this.processInformation = ('-b', $this.absoluteRenderFile, '-o', $this.outputFilepathWithHashes, '-P', `
-        $settings.scriptLocation, '-F', "PNG", '-f', '1', '--', '-file', $this.modelLocation)
+        $this.GenerateAbsolutePath($settings.scriptLocation), '-F', "PNG", '-f', '1', '--', '-file', $this.modelLocation)
 
         Write-Host "File Processing Validated!"
     }
