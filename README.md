@@ -23,6 +23,8 @@ This uses Blender3D from the command line to generated images of models to be us
   - [2.3 - Configuration](#23---configuration)
 - [3 - Usage](#3---usage)
   - [3.1 - Running](#31---running)
+    - [3.1.1 - Single Model](#311---single-model)
+    - [3.1.2 - Multiple Models](#312---multiple-models)
   - [3.2 - Customisation](#32---customisation)
 - [4 - About](#4---about)
   - [4.1 - Versioning](#41---versioning)
@@ -67,13 +69,52 @@ Configure the .json configuration file in `Processes\RenderFromPreconfigured\pro
 
 ### [3.1 - Running](#table-of-contents)
 
-If everything has been following in [Getting Started](#2---getting-started) then the following command should generate an icon of the nut example model provided in this repositary.
+After the setup in [Getting Started](#2---getting-started), the following commands are used to generate icons of the models you request. The examples here use the provided models in this repository for easy testing purposes.
 
-Open a powershell terminal and navigate to the `Processes\RenderFromPreconfigured` folder within your git cloned folder.
+| Setting | Description | Example |
+| ------- | ----------- | ------- |
+| -file / Model| The model file that you wish to have an icon generated for. | ..\\..\\ExampleObjects\\nut.fbx |
+| -output / Folder / Directory (optional) | The output directory that you wish the icon to be generated to. If this is not specified then it will be saved to the same location as the model.  | ..\\..\\Output\\ |
 
-Then run:
+These parameters works for both relative and absolute parameters.
+
+#### [3.1.1 - Single Model](#table-of-contents)
+Open a powershell terminal and navigate to the `Processes\RenderFromPreconfigured` folder within your cloned folder.
+
+For a single model the script is called with ....
+
+```
+.\triggerRender.ps1 -file FILENAME
+```
+E.g.
+```
+.\triggerRender.ps1 -file "..\..\ExampleObjects\nut.fbx"
+```
+
+... or to specify the output location a second parameter can be used.
+
+```
+.\triggerRender.ps1 -file FILENAME -output DIRECTORY
+```
+E.g.
 ```
 .\triggerRender.ps1 -file "..\..\ExampleObjects\nut.fbx" -output "..\..\Output\"
+```
+
+#### [3.1.2 - Multiple Models](#table-of-contents)
+This same command can be easily extended for generating multiple model icons within a directory using the following pattern.
+```
+Get-ChildItem DIRECTORY | Foreach-Object { .\triggerRender.ps1 -Model $_.FullName }
+```
+E.g.
+```
+Get-ChildItem "..\..\ExampleObjects\" -Filter *.fbx | Foreach-Object { .\triggerRender.ps1 -Model $_.FullName }
+```
+
+For generating multiple files recursively from a directory:
+
+```
+Get-ChildItem "..\..\ExampleObjects\" -Filter *.fbx -Recurse | Foreach-Object { .\triggerRender.ps1 -Model $_.FullName }
 ```
 
 ### [3.2 - Customisation](#table-of-contents)
