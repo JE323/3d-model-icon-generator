@@ -76,6 +76,8 @@ Then run:
 .\triggerRender.ps1 -file "..\..\ExampleObjects\nut.fbx" -output "..\..\Output\"
 ```
 
+This example shows a relative file and output folder being specified, however absolute references also work.
+
 ### [3.2 - Customisation](#table-of-contents)
 
 There are two ways of configurating this package:
