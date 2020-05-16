@@ -23,6 +23,8 @@ This uses Blender3D from the command line to generated images of models to be us
   - [2.3 - Configuration](#23---configuration)
 - [3 - Usage](#3---usage)
   - [3.1 - Running](#31---running)
+    - [3.1.1 - Single Model](#311---single-model)
+    - [3.1.2 - Multiple Models](#312---multiple-models)
   - [3.2 - Customisation](#32---customisation)
 - [4 - About](#4---about)
   - [4.1 - Versioning](#41---versioning)
