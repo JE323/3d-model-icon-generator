@@ -1,6 +1,15 @@
 param (
-    [string]$file = "",
-    [string]$output = ""
+    [Parameter(Mandatory, 
+    ValueFromPipelineByPropertyName,
+    HelpMessage = "Enter the model file to have an icon generated of.")]
+    [Alias("Model")]
+    [ValidateNotNullOrEmpty()]
+    [string]$file,
+
+    [Parameter(HelpMessage = "Enter the directory to be used for the output icon location. If not specified the same loation as the provide model will be used.")]
+    [Alias("Folder", "Directory")]
+    [ValidateNotNullOrEmpty()]
+    [string]$output
 )
 
 class Settings {
