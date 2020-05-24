@@ -104,16 +104,8 @@ class FileProcessing {
         if ($filepath -like "*:\*"){
             return $filepath
         }
-        
-        $FileName = Join-Path -Path (Get-Location) -ChildPath $filepath -Resolve -ErrorAction SilentlyContinue -ErrorVariable error
 
-        if ($FileName) {
-            Write-Host("File: " + $FileName)
-            return $FileName
-        }
-        
-        Write-Host("Invalid file: " + $error[0].TargetObject)
-        return $error[0].TargetObject
+        return $this.GeneratePathJoin((Get-Location), $filepath)
     }
 
     [string]GeneratePathJoin([string] $base, [string] $leaf){
