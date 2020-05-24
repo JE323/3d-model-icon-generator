@@ -68,21 +68,21 @@ def setupCamera():
     print("setting up camera")
 
     #find camera
-    cam = bpy.context.scene.objects.active
+    cam = blenderHelpers.findCamera()
     bpy.context.scene.camera = cam
     
     #set camera settings for position calculation
-    scene.render.pixel_aspect_x = 1
-    scene.render.pixel_aspect_y = 1
+    bpy.context.scene.render.pixel_aspect_x = 1
+    bpy.context.scene.render.pixel_aspect_y = 1
     bpy.context.scene.render.resolution_percentage = 100
       
     #set camera rotation
     bpy.ops.wm.redraw_timer(type='DRAW', iterations=1) # redraw to use new camera information
 
     # Select objects that will be rendered and move camera position to the correct place
-    for obj in scene.objects:
-        obj.select = False
+    for obj in bpy.context.view_layer.objects:
+        obj.select_set(False)
     for obj in bpy.context.visible_objects:
-        if not (obj.hide or obj.hide_render):
-            obj.select = True
+        if not (obj.hide_viewport or obj.hide_render):
+            obj.select_set(True)
     bpy.ops.view3d.camera_to_view_selected()
