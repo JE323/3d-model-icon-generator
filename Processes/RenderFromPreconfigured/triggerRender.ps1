@@ -81,9 +81,12 @@ class FileProcessing {
         $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered)
 
         $logBaseLocation = $this.GenerateAbsolutePath($settings.logLocation)
-        $this.stdLog = Join-Path -Path $logBaseLocation -ChildPath "\outputStd.log" -Resolve
-        $this.errorLog = Join-Path -Path $logBaseLocation -ChildPath "\outputError.log" -Resolve
-        $this.finalLog = Join-Path -Path $logBaseLocation -ChildPath "\output.log" -Resolve
+        if(!(Test-Path -Path $logBaseLocation )){
+            New-Item -Path $logBaseLocation -ItemType Directory 
+        }
+        $this.stdLog = $this.GeneratePathJoin($logBaseLocation, "\outputStd.log")
+        $this.errorLog = $this.GeneratePathJoin($logBaseLocation, "\outputError.log")
+        $this.finalLog = $this.GeneratePathJoin($logBaseLocation, "\output.log")
 
         $this.absoluteRenderFile = $this.GenerateAbsolutePath($settings.renderFile)
         if (-not (Test-Path $this.absoluteRenderFile)){
@@ -101,7 +104,24 @@ class FileProcessing {
         if ($filepath -like "*:\*"){
             return $filepath
         }
-        return (Join-Path -Path (Get-Location) -ChildPath $filepath -Resolve)
+        
+        $FileName = Join-Path -Path (Get-Location) -ChildPath $filepath -Resolve -ErrorAction SilentlyContinue -ErrorVariable error
+
+        if ($FileName) {
+            Write-Host("File: " + $FileName)
+            return $FileName
+        }
+        
+        Write-Host("Invalid file: " + $error[0].TargetObject)
+        return $error[0].TargetObject
+    }
+
+    [string]GeneratePathJoin([string] $base, [string] $leaf){
+        $FileName = Join-Path -Path $base -ChildPath $leaf -Resolve -ErrorAction SilentlyContinue -ErrorVariable error
+        if ($FileName) {
+            return $FileName
+        }
+        return $error[0].TargetObject
     }
 }
 
