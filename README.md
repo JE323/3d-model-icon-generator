@@ -37,7 +37,7 @@ This uses Blender3D from the command line to generated images of models to be us
 
 ### [1.1 - Compatibility](#table-of-contents)
 
-This tool was tested with Blender 3D 2.79b.
+This tool was tested with Blender 3D 2.82. For previous support of 2.79b please see v1 releases.
 
 For releases, please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
 
@@ -46,7 +46,7 @@ For releases, please refer to the [**Release**](https://github.com/JE323/3d-mode
 ### [2.1 - Install Blender 3D](#table-of-contents)
  
 Follow the instructions provided by Blender3D for how to install the software. https://docs.blender.org/manual/en/dev/getting_started/index.html
-Please note this package is currently only tested with Blender 3D 2.79b and is expected to not function with 2.8 onwards due to the major API changes that were made.
+
 
 ### [2.2 - Setup](#table-of-contents)
 Download the github package.
@@ -60,9 +60,9 @@ Configure the .json configuration file in `Processes\RenderFromPreconfigured\pro
 
 | Setting | Description | Example |
 | ------- | ----------- | ------- |
-| blenderLocation | Location of Blender installed on your computer | C:\\Program Files\\Blender Foundation\\blender-2.79b-windows64\\blender.exe |
+| blenderLocation | Location of Blender installed on your computer | C:\\Program Files\\Blender Foundation\\Blender 2.82\\blender.exe |
 | scriptLocation | Location of the python script to run within blender. As a minimum this should import the object and setup the camera location as templated within this project. Any render settings should be set within the render file. | generateIcon.py |
-| logLocation | The directory location of where to store the generated log files. | \\Logs |
+| logLocation | The directory location of where to store the generated log files. This directory will autogenerate if it does not exist. | \\Logs |
 | renderFile | The location of the blender file `.blend` to use as the base render file. | \\renderScene.blend  |
 
 ## [3 - Usage](#table-of-contents)
