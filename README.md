@@ -37,7 +37,7 @@ This uses Blender3D from the command line to generated images of models to be us
 
 ### [1.1 - Compatibility](#table-of-contents)
 
-This tool was tested with Blender 3D 2.93. For previous version support please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
+This tool was tested with Blender 3D 3.0. For previous version support please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
 
 ### [1.2 - Install Blender 3D](#table-of-contents)
  
@@ -59,7 +59,7 @@ To test your first process, configure the .json configuration file in `Processes
 
 | Setting | Description | Example |
 | ------- | ----------- | ------- |
-| blenderLocation | Location of Blender installed on your computer | C:\\Program Files\\Blender Foundation\\Blender 2.82\\blender.exe |
+| blenderLocation | Location of Blender installed on your computer | C:\\Program Files\\Blender Foundation\\Blender 3.0\\blender.exe |
 | scriptLocation | Location of the python script to run within blender. As a minimum this should import the object and setup the camera location as templated within this project. Any render settings should be set within the render file. | generateIcon.py |
 | logLocation | The directory location of where to store the generated log files. This directory will autogenerate if it does not exist. | \\Logs |
 | renderFile | The location of the blender file `.blend` to use as the base render file. | \\renderScene.blend  |
