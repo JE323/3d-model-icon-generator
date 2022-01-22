@@ -17,10 +17,10 @@ This uses Blender3D from the command line to generated images of models to be us
 - [Table of Contents](#table-of-contents)
 - [1 - Installation](#1---installation)
   - [1.1 - Compatibility](#11---compatibility)
+  - [1.2 - Install Blender 3D](#12---install-blender-3d)
 - [2 - Getting Started](#2---getting-started)
-  - [2.1 - Install Blender 3D](#21---install-blender-3d)
-  - [2.2 - Setup](#22---setup)
-  - [2.3 - Configuration](#23---configuration)
+  - [2.1 - Setup](#21---setup)
+  - [2.2 - Configuration](#22---configuration)
 - [3 - Usage](#3---usage)
   - [3.1 - Running](#31---running)
     - [3.1.1 - Single Model](#311---single-model)
@@ -37,30 +37,29 @@ This uses Blender3D from the command line to generated images of models to be us
 
 ### [1.1 - Compatibility](#table-of-contents)
 
-This tool was tested with Blender 3D 2.82. For previous support of 2.79b please see v1 releases.
+This tool was tested with Blender 3D 3.0. For previous version support please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
 
-For releases, please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
-
-## [2 - Getting Started](#table-of-contents)
-
-### [2.1 - Install Blender 3D](#table-of-contents)
+### [1.2 - Install Blender 3D](#table-of-contents)
  
 Follow the instructions provided by Blender3D for how to install the software. https://docs.blender.org/manual/en/dev/getting_started/index.html
 
+## [2 - Getting Started](#table-of-contents)
 
-### [2.2 - Setup](#table-of-contents)
+### [2.1 - Setup](#table-of-contents)
 Download the github package.
 
 ```
 git clone https://github.com/JE323/3d-model-icon-generator.git
 ```
 
-### [2.3 - Configuration](#table-of-contents)
-Configure the .json configuration file in `Processes\RenderFromPreconfigured\processSettings.json`
+### [2.2 - Configuration](#table-of-contents)
+For getting started this example uses the process called _RenderFromPreconfigured_ which can be found in the _Processes_ folder. The concept behind this is folders can be duplicated for complete flexibility of different processes that you wish to configure.
+
+To test your first process, configure the .json configuration file in `Processes\RenderFromPreconfigured\processSettings.json`
 
 | Setting | Description | Example |
 | ------- | ----------- | ------- |
-| blenderLocation | Location of Blender installed on your computer | C:\\Program Files\\Blender Foundation\\Blender 2.82\\blender.exe |
+| blenderLocation | Location of Blender installed on your computer | C:\\Program Files\\Blender Foundation\\Blender 3.0\\blender.exe |
 | scriptLocation | Location of the python script to run within blender. As a minimum this should import the object and setup the camera location as templated within this project. Any render settings should be set within the render file. | generateIcon.py |
 | logLocation | The directory location of where to store the generated log files. This directory will autogenerate if it does not exist. | \\Logs |
 | renderFile | The location of the blender file `.blend` to use as the base render file. | \\renderScene.blend  |

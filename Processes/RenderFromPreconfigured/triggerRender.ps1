@@ -37,6 +37,7 @@ class Settings {
 
 class FileProcessing {
     #processed variables
+    [string]$orgFilename
     [string]$isolatedFilename
     [string]$isolatedFilenameWithHashes
     [string]$isolatedFilenameNumbered
@@ -44,6 +45,7 @@ class FileProcessing {
     [string]$outputFilepath
     [string]$outputFilepathWithHashes
     [string]$outputFilepathNumbered
+    [string]$finalFilename
 
     [string]$stdLog
     [string]$errorLog
@@ -66,7 +68,8 @@ class FileProcessing {
         }
 
         $modelLeaf = Split-Path $this.modelLocation -Leaf
-        $this.isolatedFilename = $modelLeaf.Split(".")[0]
+        $this.orgFilename = $modelLeaf.Split(".")[0]
+        $this.isolatedFilename = $this.orgFilename.replace(" ","_")
         $this.fileExtension = $modelLeaf.Split(".")[1]
         $this.isolatedFilenameWithHashes = $this.isolatedFilename + "_##"
         $this.isolatedFilenameNumbered = $this.isolatedFilename + "_01"
@@ -76,9 +79,10 @@ class FileProcessing {
         } else {
             $outputBaseLocation = Split-Path $this.modelLocation -Parent
         }
-        $this.outputFilepath = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilename)
-        $this.outputFilepathWithHashes = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameWithHashes)
-        $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered)
+        $this.outputFilepath = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilename).Replace(" ","_")
+        $this.outputFilepathWithHashes = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameWithHashes).Replace(" ","_")
+        $this.outputFilepathNumbered = (Join-Path -Path $outputBaseLocation -ChildPath $this.isolatedFilenameNumbered).Replace(" ","_")
+        $this.finalFilename = (Join-Path -Path $outputBaseLocation -ChildPath $this.orgFilename)
 
         $logBaseLocation = $this.GenerateAbsolutePath($settings.logLocation)
         if(!(Test-Path -Path $logBaseLocation )){
@@ -147,15 +151,6 @@ Finally
     Get-Content $fileProcessing.errorLog, $fileProcessing.stdLog | Out-File $fileProcessing.finalLog -Append
 }
 
-Try
-{
-    Remove-Item ($fileProcessing.outputFilepath + ".png") -ErrorAction Stop
-    Write-Warning ("File already found - output was overwritten")
-}
-Catch
-{
-    Write-Host ("No file found - new render was created.")
-}
-Rename-Item -Path ($fileProcessing.outputFilepathNumbered + ".png") -NewName ($fileProcessing.isolatedFilename + ".png")
+Move-Item -Path ($fileProcessing.outputFilepathNumbered + ".png") -Destination ($fileProcessing.finalFilename + ".png") -Force
 
 Write-Host "Process Complete"
