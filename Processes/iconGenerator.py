@@ -33,9 +33,13 @@ def parseArgs():
     try:
         global objectToLoad
         objectToLoad = argv[argv.index("-file") + 1]
+        for i in range(argv.index("-file") + 2,len(argv)):
+            objectToLoad += (" " + argv[i])
+
         print("Object File Specified: " + objectToLoad)
-    except:
-        print("No object provided.")
+    except Exception as e:
+        print(e)
+        print("Error with object provided.")
         pass
 
     #space out next set of outputs    
