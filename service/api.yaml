@@ -1,0 +1,24 @@
+openapi: '3.0.3'
+info:
+  title: 3D Model Thumbnail Service
+  description: Service for generating thumbnails from 3D models
+  version: 0.0.1
+
+paths:
+  /ping:
+    get:
+      description: Checking service is online and responsive.
+      security: []
+      responses:
+        200:
+          description: Ping response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                    format: date-time
+                    example: 2020-01-01T12:00:00Z
+      
