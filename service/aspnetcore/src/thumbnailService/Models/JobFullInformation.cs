@@ -24,14 +24,27 @@ namespace thumbnailService.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class IconResponse : IEquatable<IconResponse>
+    public partial class JobFullInformation : IEquatable<JobFullInformation>
     {
         /// <summary>
-        /// Gets or Sets Icon
+        /// Gets or Sets Name
         /// </summary>
         [Required]
-        [DataMember(Name="icon", EmitDefaultValue=false)]
-        public byte[] Icon { get; set; }
+        [DataMember(Name="name", EmitDefaultValue=false)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [Required]
+        [DataMember(Name="id", EmitDefaultValue=false)]
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        [DataMember(Name="status", EmitDefaultValue=false)]
+        public JobStatus Status { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -40,8 +53,10 @@ namespace thumbnailService.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class IconResponse {\n");
-            sb.Append("  Icon: ").Append(Icon).Append("\n");
+            sb.Append("class JobFullInformation {\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -64,24 +79,34 @@ namespace thumbnailService.Models
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((IconResponse)obj);
+            return obj.GetType() == GetType() && Equals((JobFullInformation)obj);
         }
 
         /// <summary>
-        /// Returns true if IconResponse instances are equal
+        /// Returns true if JobFullInformation instances are equal
         /// </summary>
-        /// <param name="other">Instance of IconResponse to be compared</param>
+        /// <param name="other">Instance of JobFullInformation to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(IconResponse other)
+        public bool Equals(JobFullInformation other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Icon == other.Icon ||
-                    Icon != null &&
-                    Icon.Equals(other.Icon)
+                    Name == other.Name ||
+                    Name != null &&
+                    Name.Equals(other.Name)
+                ) && 
+                (
+                    Id == other.Id ||
+                    Id != null &&
+                    Id.Equals(other.Id)
+                ) && 
+                (
+                    Status == other.Status ||
+                    
+                    Status.Equals(other.Status)
                 );
         }
 
@@ -95,8 +120,12 @@ namespace thumbnailService.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Icon != null)
-                    hashCode = hashCode * 59 + Icon.GetHashCode();
+                    if (Name != null)
+                    hashCode = hashCode * 59 + Name.GetHashCode();
+                    if (Id != null)
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    
+                    hashCode = hashCode * 59 + Status.GetHashCode();
                 return hashCode;
             }
         }
@@ -104,12 +133,12 @@ namespace thumbnailService.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(IconResponse left, IconResponse right)
+        public static bool operator ==(JobFullInformation left, JobFullInformation right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(IconResponse left, IconResponse right)
+        public static bool operator !=(JobFullInformation left, JobFullInformation right)
         {
             return !Equals(left, right);
         }

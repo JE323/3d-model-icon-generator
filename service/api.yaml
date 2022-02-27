@@ -6,10 +6,18 @@ info:
 servers:
   - url: http://localhost
     description: Local Server
+tags:
+  - name: Misc
+    description: General application endpoints.
+  - name: Job Processing
+    description: Submission of jobs and models for processing.
 
 paths:
   /ping:
     get:
+      tags: 
+        - Misc
+      operationId: getPing
       description: Checking service is online and responsive.
       security: []
       responses:
@@ -25,13 +33,35 @@ paths:
                     format: date-time
                     example: 2020-01-01T12:00:00Z
 
+  /createJob:
+    post:
+      tags:
+        - Job Processing
+      operationId: postCreateJob
+      requestBody:
+        description: "Creation of job"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobDescription"
+      responses:
+        200:
+          description: Returns the thumbnail of the posted model.
+          content:
+            multipart/mixed:
+              schema:
+                $ref: "#/components/schemas/JobInformation"
+
   /submitModel:
     post:
+      tags:
+        - Job Processing
+      operationId: postSubmitModel
       parameters:
         - name: modelID
           in: query
           required: true
-          description: The Guid of the model to retrieve
+          description: The job Guid of the model to submit
           schema:
             type: string
             format: uuid
@@ -47,6 +77,71 @@ paths:
                   format: binary
       responses:
         200:
+          description: Ok
+  
+  /queryJob:
+    get:
+      tags:
+        - Job Processing
+      operationId: getQueryJob
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+      responses:
+        200:
+          description: Information about the job requested.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobFullInformation"
+
+  /startJob:
+    get:
+      tags:
+        - Job Processing
+      operationId: getStartJob
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+      responses:
+        200:
+          description: Returns the thumbnail of the posted model.
+          content:
+            multipart/mixed:
+              schema:
+                $ref: "#/components/schemas/IconResponse"
+        201:
+          description: Model thumbnail now processing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IconResponse"
+
+  /getThumbnail:
+    get:
+      tags:
+        - Job Processing
+      operationId: getThumbnail
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+      responses:
+        200:
           description: Returns the thumbnail of the posted model.
           content:
             multipart/mixed:
@@ -55,15 +150,47 @@ paths:
 
 components:
   schemas:
-    IconResponse:
+    JobDescription:
+      type: object
+      properties:
+        name:
+          type: string
+
+    JobInformation:
       type: object
       required:
+        - "name"
         - "id"
-        - "icon"
       properties:
+        name:
+          type: string
         id:
           type: string
           format: uuid
+
+    JobFullInformation:
+      type: object
+      required:
+        - "name"
+        - "id"
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: "#/components/schemas/JobStatus"
+
+    JobStatus:
+      type: string
+      enum: [Created, AwaitingModel, Processing, Finished]
+
+    IconResponse:
+      type: object
+      required:
+        - "icon"
+      properties:
         icon:
           type: string
           format: byte
