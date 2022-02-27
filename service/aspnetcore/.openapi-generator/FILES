@@ -1,12 +1,7 @@
-README.md
-build.bat
-build.sh
-src/thumbnailService/.gitignore
 src/thumbnailService/Attributes/ValidateModelStateAttribute.cs
 src/thumbnailService/Authentication/ApiAuthentication.cs
 src/thumbnailService/Controllers/DefaultApi.cs
 src/thumbnailService/Converters/CustomEnumConverter.cs
-src/thumbnailService/Dockerfile
 src/thumbnailService/Filters/BasePathFilter.cs
 src/thumbnailService/Filters/GeneratePathParamsValidationFilter.cs
 src/thumbnailService/Formatters/InputFormatterStream.cs
@@ -14,12 +9,3 @@ src/thumbnailService/Models/IconResponse.cs
 src/thumbnailService/Models/InlineObject.cs
 src/thumbnailService/Models/InlineResponse200.cs
 src/thumbnailService/OpenApi/TypeExtensions.cs
-src/thumbnailService/Program.cs
-src/thumbnailService/Properties/launchSettings.json
-src/thumbnailService/Startup.cs
-src/thumbnailService/appsettings.json
-src/thumbnailService/thumbnailService.csproj
-src/thumbnailService/wwwroot/README.md
-src/thumbnailService/wwwroot/index.html
-src/thumbnailService/wwwroot/openapi-original.json
-thumbnailService.sln
