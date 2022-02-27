@@ -1,0 +1,128 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "description" : "Service for generating thumbnails from 3D models",
+    "title" : "3D Model Thumbnail Service",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "paths" : {
+    "/ping" : {
+      "get" : {
+        "description" : "Checking service is online and responsive.",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            },
+            "description" : "Ping response"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/submitModel" : {
+      "post" : {
+        "parameters" : [ {
+          "description" : "The Guid of the model to retrieve",
+          "explode" : true,
+          "in" : "query",
+          "name" : "modelID",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "style" : "form"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/inline_object",
+          "content" : {
+            "multi/form-data" : {
+              "schema" : {
+                "properties" : {
+                  "file" : {
+                    "format" : "binary",
+                    "type" : "string"
+                  }
+                },
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "multipart/mixed" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IconResponse"
+                }
+              }
+            },
+            "description" : "Returns the thumbnail of the posted model."
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "requestBodies" : {
+      "inline_object" : {
+        "content" : {
+          "multi/form-data" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/inline_object"
+            }
+          }
+        },
+        "required" : true
+      }
+    },
+    "schemas" : {
+      "IconResponse" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "icon" : {
+            "format" : "byte",
+            "type" : "string"
+          }
+        },
+        "required" : [ "icon", "id" ],
+        "type" : "object"
+      },
+      "inline_response_200" : {
+        "example" : {
+          "success" : "2020-01-01T12:00:00Z"
+        },
+        "properties" : {
+          "success" : {
+            "example" : "2020-01-01T12:00:00Z",
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "inline_object" : {
+        "properties" : {
+          "file" : {
+            "format" : "binary",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      }
+    }
+  }
+}

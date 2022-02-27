@@ -21,4 +21,46 @@ paths:
                     type: string
                     format: date-time
                     example: 2020-01-01T12:00:00Z
-      
+
+  /submitModel:
+    post:
+      parameters:
+        - name: modelID
+          in: query
+          required: true
+          description: The Guid of the model to retrieve
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multi/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Returns the thumbnail of the posted model.
+          content:
+            multipart/mixed:
+              schema:
+                $ref: "#/components/schemas/IconResponse"
+
+components:
+  schemas:
+    IconResponse:
+      type: object
+      required:
+        - "id"
+        - "icon"
+      properties:
+        id:
+          type: string
+          format: uuid
+        icon:
+          type: string
+          format: byte
