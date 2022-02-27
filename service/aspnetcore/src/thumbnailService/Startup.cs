@@ -127,11 +127,7 @@ namespace thumbnailService
                 {
                     // set route prefix to openapi, e.g. http://localhost:8080/openapi/index.html
                     c.RoutePrefix = "openapi";
-                    //TODO: Either use the SwaggerGen generated OpenAPI contract (generated from C# classes)
-                    c.SwaggerEndpoint("/openapi/0.0.1/openapi.json", "3D Model Thumbnail Service");
-
-                    //TODO: Or alternatively use the original OpenAPI contract that's included in the static files
-                    // c.SwaggerEndpoint("/openapi-original.json", "3D Model Thumbnail Service Original");
+                    c.SwaggerEndpoint("/openapi-original.json", "3D Model Thumbnail Service Original");
                 });
             app.UseRouting();
             app.UseEndpoints(endpoints =>
