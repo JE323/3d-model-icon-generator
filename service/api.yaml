@@ -79,27 +79,6 @@ paths:
         200:
           description: Ok
   
-  /queryJob:
-    get:
-      tags:
-        - Job Processing
-      operationId: getQueryJob
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-            minimum: 1
-      responses:
-        200:
-          description: Information about the job requested.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/JobFullInformation"
-
   /startJob:
     get:
       tags:
@@ -126,6 +105,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/IconResponse"
+
+  /queryJob:
+    get:
+      tags:
+        - Job Processing
+      operationId: getQueryJob
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+      responses:
+        200:
+          description: Information about the job requested.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobFullInformation"
 
   /getThumbnail:
     get:

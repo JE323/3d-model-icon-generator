@@ -1,0 +1,24 @@
+@startuml IntegrationSequenceDiagram
+
+title Sequence Diagram for Client Intgeration
+
+!theme bluegray
+
+group Optional
+Client -> Server : Ping Server to check if online
+Server -> Client: Response
+end
+Client -> Server : //createJob//
+Server -> Client : [Response] Generated GUID 
+Client -> Server : //submitModel//
+Server -> Client: Ok
+Client -> Server : //startJob//
+Server -> Client: Ok
+group Optional
+Client -> Server : //queryJob//
+Server -> Client: [Response] Current status
+end
+Client -> Server : //getThumbnail//
+Server -> Client : [Response] Thumbnail
+
+@enduml
