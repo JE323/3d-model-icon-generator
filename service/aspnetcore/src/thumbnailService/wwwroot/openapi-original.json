@@ -6,12 +6,21 @@
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "/"
+    "description" : "Local Server",
+    "url" : "http://localhost"
+  } ],
+  "tags" : [ {
+    "description" : "General application endpoints.",
+    "name" : "Misc"
+  }, {
+    "description" : "Submission of jobs and models for processing.",
+    "name" : "Job Processing"
   } ],
   "paths" : {
     "/ping" : {
       "get" : {
         "description" : "Checking service is online and responsive.",
+        "operationId" : "getPing",
         "responses" : {
           "200" : {
             "content" : {
@@ -24,13 +33,43 @@
             "description" : "Ping response"
           }
         },
-        "security" : [ ]
+        "security" : [ ],
+        "tags" : [ "Misc" ]
+      }
+    },
+    "/createJob" : {
+      "post" : {
+        "operationId" : "postCreateJob",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/JobDescription"
+              }
+            }
+          },
+          "description" : "Creation of job"
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "multipart/mixed" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/JobInformation"
+                }
+              }
+            },
+            "description" : "Returns the thumbnail of the posted model."
+          }
+        },
+        "tags" : [ "Job Processing" ]
       }
     },
     "/submitModel" : {
       "post" : {
+        "operationId" : "postSubmitModel",
         "parameters" : [ {
-          "description" : "The Guid of the model to retrieve",
+          "description" : "The job Guid of the model to submit",
           "explode" : true,
           "in" : "query",
           "name" : "modelID",
@@ -60,6 +99,99 @@
         },
         "responses" : {
           "200" : {
+            "description" : "Ok"
+          }
+        },
+        "tags" : [ "Job Processing" ]
+      }
+    },
+    "/startJob" : {
+      "get" : {
+        "operationId" : "getStartJob",
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "minimum" : 1,
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "multipart/mixed" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IconResponse"
+                }
+              }
+            },
+            "description" : "Returns the thumbnail of the posted model."
+          },
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IconResponse"
+                }
+              }
+            },
+            "description" : "Model thumbnail now processing."
+          }
+        },
+        "tags" : [ "Job Processing" ]
+      }
+    },
+    "/queryJob" : {
+      "get" : {
+        "operationId" : "getQueryJob",
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "minimum" : 1,
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/JobFullInformation"
+                }
+              }
+            },
+            "description" : "Information about the job requested."
+          }
+        },
+        "tags" : [ "Job Processing" ]
+      }
+    },
+    "/getThumbnail" : {
+      "get" : {
+        "operationId" : "getThumbnail",
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "minimum" : 1,
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
             "content" : {
               "multipart/mixed" : {
                 "schema" : {
@@ -69,7 +201,8 @@
             },
             "description" : "Returns the thumbnail of the posted model."
           }
-        }
+        },
+        "tags" : [ "Job Processing" ]
       }
     }
   },
@@ -87,18 +220,66 @@
       }
     },
     "schemas" : {
-      "IconResponse" : {
+      "JobDescription" : {
+        "example" : {
+          "name" : "name"
+        },
         "properties" : {
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "JobInformation" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "JobFullInformation" : {
+        "example" : {
+          "name" : "name",
+          "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+          "status" : null
+        },
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
           "id" : {
             "format" : "uuid",
             "type" : "string"
           },
+          "status" : {
+            "$ref" : "#/components/schemas/JobStatus"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "JobStatus" : {
+        "enum" : [ "Created", "AwaitingModel", "Processing", "Finished" ],
+        "type" : "string"
+      },
+      "IconResponse" : {
+        "example" : {
+          "icon" : "icon"
+        },
+        "properties" : {
           "icon" : {
             "format" : "byte",
             "type" : "string"
           }
         },
-        "required" : [ "icon", "id" ],
+        "required" : [ "icon" ],
         "type" : "object"
       },
       "inline_response_200" : {

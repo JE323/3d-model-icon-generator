@@ -74,7 +74,7 @@ namespace thumbnailService
                     c.SwaggerDoc("0.0.1", new OpenApiInfo
                     {
                         Title = "3D Model Thumbnail Service",
-                        Description = "3D Model Thumbnail Service (ASP.NET Core 5.0)",
+                        Description = "3D Model Thumbnail Service (ASP.NET Core 6.0)",
                         TermsOfService = new Uri("https://github.com/openapitools/openapi-generator"),
                         Contact = new OpenApiContact
                         {

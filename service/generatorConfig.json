@@ -1,7 +1,7 @@
 {
     "classModifier": "abstract",
-    "aspnetCoreVersion": "5.0",
+    "aspnetCoreVersion": "6.0",
     "packageAuthors": "3dModelIconGenerator",
-    "swashbuckleVersion": "5.0.0",
+    "swashbuckleVersion": "6.0.0",
     "useDateTimeOffset": true
 }

@@ -1,4 +1,4 @@
-# thumbnailService - ASP.NET Core 5.0 Server
+# thumbnailService - ASP.NET Core 6.0 Server
 
 Service for generating thumbnails from 3D models
 
