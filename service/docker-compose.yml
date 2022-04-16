@@ -8,8 +8,8 @@ services:
     restart: always
     volumes:
       - ./postgres-data:/var/lib/postgres/data
-      - .postgres/initTables.sql:/docker-entrypoint-initdb.d/initTables.sql
-   #   - .postgresql/1-initData.sql:/docker-entrypoint-initdb.d/1-initData.sql
+      - ./psql/initTables.sql:/docker-entrypoint-initdb.d/initTables.sql
+      - ./psql/initData.sql:/docker-entrypoint-initdb.d/initData.sql
     env_file:
       - psql/.env.database
     
