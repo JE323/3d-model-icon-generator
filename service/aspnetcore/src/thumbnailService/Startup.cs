@@ -14,6 +14,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using thumbnailService.Authentication;
+using thumbnailService.Context;
 using thumbnailService.Filters;
 using thumbnailService.OpenApi;
 using thumbnailService.Formatters;
@@ -52,52 +54,57 @@ namespace thumbnailService
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<ModelThumbnailDBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ModelThumbnailDBContext")));
+            services.AddDbContext<ModelThumbnailDBContext>(
+                options => options.UseNpgsql(
+                    "Host=localhost;Port=5432;Database=database;Username=admin;Password=admin;Include Error Detail=true"));
+
 
             // Add framework services.
             services
                 // Don't need the full MVC stack for an API, see https://andrewlock.net/comparing-startup-between-the-asp-net-core-3-templates/
-                .AddControllers(options => {
-                    options.InputFormatters.Insert(0, new InputFormatterStream());
-                })
-                .AddNewtonsoftJson(opts =>
-                {
-                    opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    opts.SerializerSettings.Converters.Add(new StringEnumConverter
-                    {
-                        NamingStrategy = new CamelCaseNamingStrategy()
-                    });
-                });
+               .AddControllers(options => { options.InputFormatters.Insert(0, new InputFormatterStream()); })
+               .AddNewtonsoftJson(opts =>
+                                  {
+                                      opts.SerializerSettings.ContractResolver =
+                                          new CamelCasePropertyNamesContractResolver();
+                                      opts.SerializerSettings.Converters.Add(new StringEnumConverter
+                                      {
+                                          NamingStrategy = new CamelCaseNamingStrategy()
+                                      });
+                                  });
 
             services
-                .AddSwaggerGen(c =>
-                {
-                    c.SwaggerDoc("0.0.1", new OpenApiInfo
-                    {
-                        Title = "3D Model Thumbnail Service",
-                        Description = "3D Model Thumbnail Service (ASP.NET Core 6.0)",
-                        TermsOfService = new Uri("https://github.com/openapitools/openapi-generator"),
-                        Contact = new OpenApiContact
-                        {
-                            Name = "OpenAPI-Generator Contributors",
-                            Url = new Uri("https://github.com/openapitools/openapi-generator"),
-                            Email = ""
-                        },
-                        License = new OpenApiLicense
-                        {
-                            Name = "NoLicense",
-                            Url = new Uri("http://localhost")
-                        },
-                        Version = "0.0.1",
-                    });
-                    c.CustomSchemaIds(type => type.FriendlyId(true));
-                    c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
+               .AddSwaggerGen(c =>
+                              {
+                                  c.SwaggerDoc("0.0.1", new OpenApiInfo
+                                  {
+                                      Title = "3D Model Thumbnail Service",
+                                      Description = "3D Model Thumbnail Service (ASP.NET Core 6.0)",
+                                      TermsOfService = new Uri("https://github.com/openapitools/openapi-generator"),
+                                      Contact = new OpenApiContact
+                                      {
+                                          Name = "OpenAPI-Generator Contributors",
+                                          Url = new Uri("https://github.com/openapitools/openapi-generator"),
+                                          Email = ""
+                                      },
+                                      License = new OpenApiLicense
+                                      {
+                                          Name = "NoLicense",
+                                          Url = new Uri("http://localhost")
+                                      },
+                                      Version = "0.0.1",
+                                  });
+                                  c.CustomSchemaIds(type => type.FriendlyId(true));
+                                  c.IncludeXmlComments(
+                                      $"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
 
-                    // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
-                    // Use [ValidateModelState] on Actions to actually validate it in C# as well!
-                    c.OperationFilter<GeneratePathParamsValidationFilter>();
-                });
-                services
-                    .AddSwaggerGenNewtonsoftSupport();
+                                  // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
+                                  // Use [ValidateModelState] on Actions to actually validate it in C# as well!
+                                  c.OperationFilter<GeneratePathParamsValidationFilter>();
+                              });
+            services
+               .AddSwaggerGenNewtonsoftSupport();
         }
 
         /// <summary>
@@ -119,21 +126,15 @@ namespace thumbnailService
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseSwagger(c =>
-                {
-                    c.RouteTemplate = "openapi/{documentName}/openapi.json";
-                })
-                .UseSwaggerUI(c =>
-                {
-                    // set route prefix to openapi, e.g. http://localhost:8080/openapi/index.html
-                    c.RoutePrefix = "openapi";
-                    c.SwaggerEndpoint("/openapi-original.json", "3D Model Thumbnail Service Original");
-                });
+            app.UseSwagger(c => { c.RouteTemplate = "openapi/{documentName}/openapi.json"; })
+               .UseSwaggerUI(c =>
+                             {
+                                 // set route prefix to openapi, e.g. http://localhost:8080/openapi/index.html
+                                 c.RoutePrefix = "openapi";
+                                 c.SwaggerEndpoint("/openapi-original.json", "3D Model Thumbnail Service Original");
+                             });
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
