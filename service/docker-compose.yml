@@ -11,4 +11,17 @@ services:
       - ./psql/init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - psql/.env.database
-    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  thumbnailService:
+    container_name: thumbnailService
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    image: thumbnail_service
+    restart: always
+    ports:
+      - "80:80"

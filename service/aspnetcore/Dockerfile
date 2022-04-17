@@ -1,18 +1,20 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # Container we use for final publish
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS base
 WORKDIR /app
+ENV ASPNETCORE_URLS http://+:80
 EXPOSE 80
-EXPOSE 443
+#EXPOSE 443
 
 # Build container
-FROM mcr.microsoft.com/dotnet/core/sdk:6.0-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
 
 # Copy the code into the container
 WORKDIR /src
 COPY ["src/thumbnailService/thumbnailService.csproj", "thumbnailService/"]
 
+RUN dotnet clean "thumbnailService/thumbnailService.csproj"
 # NuGet restore
 RUN dotnet restore "thumbnailService/thumbnailService.csproj"
 COPY ["src/thumbnailService/", "thumbnailService/"]
