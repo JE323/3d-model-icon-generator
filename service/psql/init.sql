@@ -4,27 +4,23 @@
 
 create table if not exists jobStatus
 (
-    id   uuid not null,
+    id   uuid not null constraint jobStatus_pk primary key,
     name text
 );
 
-create unique index if not exists jobStatus_id_uindex
-    on jobStatus (id);
+create unique index if not exists jobStatus_id_uindex on jobStatus (id);
 
 create table if not exists jobs
 (
-    id        uuid not null,
+    id        uuid not null constraint jobs_pk primary key,
     name      text not null,
     modelId uuid,
     statusId    uuid,
-    constraint jobs_pk
-        primary key (id),
     constraint jobStatus_fk
         foreign key (statusId) references jobStatus(id)
 );
 
-create unique index if not exists jobs_id_uindex
-    on jobs (id);
+create unique index if not exists jobs_id_uindex on jobs (id);
 
 
 -----------------
