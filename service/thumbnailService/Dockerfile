@@ -12,12 +12,12 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
 
 # Copy the code into the container
 WORKDIR /src
-COPY ["src/thumbnailService/thumbnailService.csproj", "thumbnailService/"]
+COPY ["thumbnailService/thumbnailService/thumbnailService.csproj", "thumbnailService/"]
 
 RUN dotnet clean "thumbnailService/thumbnailService.csproj"
 # NuGet restore
 RUN dotnet restore "thumbnailService/thumbnailService.csproj"
-COPY ["src/thumbnailService/", "thumbnailService/"]
+COPY ["thumbnailService/thumbnailService/", "thumbnailService/"]
 
 # Build the API
 WORKDIR "thumbnailService"

@@ -4,7 +4,7 @@ info:
   description: Service for generating thumbnails from 3D models
   version: 0.0.1
 servers:
-  - url: http://localhost
+  - url: http://localhost:80
     description: Local Server
 tags:
   - name: Misc
