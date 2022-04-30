@@ -4,17 +4,19 @@ Service for generating thumbnails from 3D models
 
 ## Run
 
+Windows:
+
+```
+build.bat
+```
+
+
 Linux/OS X:
 
 ```
 sh build.sh
 ```
 
-Windows:
-
-```
-build.bat
-```
 ## Run in Docker
 
 ```
