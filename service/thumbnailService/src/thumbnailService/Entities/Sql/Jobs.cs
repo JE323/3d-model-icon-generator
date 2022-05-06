@@ -6,10 +6,10 @@ namespace thumbnailService.Entities.Sql
     public partial class Jobs
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public Guid? Modelid { get; set; }
         public Guid? Statusid { get; set; }
 
-        public virtual Jobstatus Status { get; set; }
+        public virtual Jobstatus? Status { get; set; }
     }
 }

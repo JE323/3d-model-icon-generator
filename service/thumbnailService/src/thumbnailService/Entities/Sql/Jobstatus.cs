@@ -11,7 +11,7 @@ namespace thumbnailService.Entities.Sql
         }
 
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public virtual ICollection<Jobs> Jobs { get; set; }
     }
