@@ -48,7 +48,7 @@ def parseArgs():
 def importObject():
     print("importing object")
     
-    #import object depending on the type - .fbx, .obj .glb .gltf
+    #import object depending on the type - .fbx, .obj .glb
     print(objectToLoad)
     detectedFileTypeSplit = objectToLoad.split('.')
     detectedFileType = detectedFileTypeSplit[len(detectedFileTypeSplit)-1]
