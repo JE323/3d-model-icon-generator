@@ -48,7 +48,7 @@ def parseArgs():
 def importObject():
     print("importing object")
     
-    #import object depending on the type - .fbx, .obj
+    #import object depending on the type - .fbx, .obj .glb
     print(objectToLoad)
     detectedFileTypeSplit = objectToLoad.split('.')
     detectedFileType = detectedFileTypeSplit[len(detectedFileTypeSplit)-1]
@@ -57,6 +57,8 @@ def importObject():
         importedObject = bpy.ops.import_scene.obj(filepath=objectToLoad)
     elif(detectedFileType == "fbx"):
         importedObject = bpy.ops.import_scene.fbx(filepath=objectToLoad)
+    elif(detectedFileType == "glb"):
+        importedObject = bpy.ops.import_scene.gltf(filepath=objectToLoad)
 
     #recalculate all the origins so the boundary box dimensions are correct
     bpy.ops.object.select_all(action='SELECT')

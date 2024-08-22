@@ -9,7 +9,7 @@
 
 3D Model Icon Generator generates icons when provided with a 3D model.
 
-This uses Blender3D from the command line to generated images of models to be used as icons or thumbnails, the idea being this would be incorperated as part of an automated pipeline. Currently, .obj and .fbx model files are supported.
+This uses Blender3D from the command line to generated images of models to be used as icons or thumbnails, the idea being this would be incorperated as part of an automated pipeline. Currently, .obj, .fbx and .glb model files are supported.
 
 ## Table of Contents
 
