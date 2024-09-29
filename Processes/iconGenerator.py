@@ -81,9 +81,6 @@ def setupCamera():
     bpy.context.scene.render.pixel_aspect_x = 1
     bpy.context.scene.render.pixel_aspect_y = 1
     bpy.context.scene.render.resolution_percentage = 100
-      
-    #set camera rotation
-    bpy.ops.wm.redraw_timer(type='DRAW', iterations=1) # redraw to use new camera information
 
     # Select objects that will be rendered and move camera position to the correct place
     for obj in bpy.context.view_layer.objects:
