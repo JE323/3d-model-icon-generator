@@ -9,7 +9,7 @@
 
 3D Model Icon Generator generates icons when provided with a 3D model.
 
-This uses Blender3D from the command line to generated images of models to be used as icons or thumbnails, the idea being this would be incorperated as part of an automated pipeline. Currently, .obj, .fbx and .glb model files are supported.
+This uses [Blender](https://www.blender.org/) from the command line to generated images of models to be used as icons or thumbnails, the idea being this would be incorperated as part of an automated pipeline. Currently, .obj, .fbx and .glb model files are supported.
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@ This uses Blender3D from the command line to generated images of models to be us
 
 ### [1.1 - Compatibility](#table-of-contents)
 
-This tool was tested with Blender 3D 3.0. For previous version support please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
+This tool was tested with Blender 4.2 LTS. For previous version support please refer to the [releases](https://github.com/JE323/3d-model-icon-generator/releases) page.
 
 ### [1.2 - Install Blender 3D](#table-of-contents)
  
@@ -126,7 +126,7 @@ There are two ways of configurating this package:
 
 ### [4.1 - Versioning](#table-of-contents)
 
-This project uses [SemVer](http://semver.org/) for versioning. For releases, please refer to the [**Release**](https://github.com/JE323/3d-model-icon-generator/releases) page.
+This project uses [SemVer](http://semver.org/) for versioning. For releases, please refer to the [releases](https://github.com/JE323/3d-model-icon-generator/releases) page.
 
 ### [4.2 - Roadmap](#table-of-contents)
 
